@@ -18,5 +18,10 @@ namespace Vega.Models
 
         public Make Make { get; set; }
         public int MakeId { get; set; }
+        public IList<Feature> Features { get; set; }
+        public Model()
+        {
+            Features = new List<Feature>();
+        }
     }
 }
