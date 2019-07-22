@@ -34,7 +34,7 @@ namespace Vega.Controllers
                 ModelState.AddModelError("ModelId", "Invalid model Id.");
                 return BadRequest(ModelState);
             }
-                        
+
             foreach (var feature in vehicleResource.Features)
             {
                 if (await context.Features.FindAsync(feature) == null)
@@ -49,11 +49,27 @@ namespace Vega.Controllers
                 ModelState.AddModelError("Features", "The vehicle must have 1 or more features.");
                 return BadRequest(ModelState);
             }
-            
+
             var vehicle = mapper.Map<VehicleResource, Vehicle>(vehicleResource);
             vehicle.LastUpdate = DateTime.Now;
 
             context.Vehicles.Add(vehicle);
+            await context.SaveChangesAsync();
+
+            var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody]VehicleResource vehicleResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var vehicle = await context.Vehicles.FindAsync(id);
+            mapper.Map<VehicleResource, Vehicle>(vehicleResource, vehicle);
+            vehicle.LastUpdate = DateTime.Now;
+
             await context.SaveChangesAsync();
 
             var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
