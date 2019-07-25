@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Vega.Controllers.Resources
 {
-    public class MakeResource
+    public class MakeResource : KeyValuePairResource
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public IList<ModelResource> Models { get; set; }
+        public IList<KeyValuePairResource> Models { get; set; }
 
         public MakeResource()
         {
-            Models = new List<ModelResource>();
+            Models = new List<KeyValuePairResource>();
         }
     }
 }
